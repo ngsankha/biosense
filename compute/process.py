@@ -23,10 +23,15 @@ while(ser.isOpen()):
     # if the bad posture is prolonged, send the buzz
     if(counter > limit):
       serial.write("1")
+      csvwriter.writerow([num, val, 1])
       counter = 0
+    else:
+      csvwriter.writerow([num, val, 0])
   # if the posture is good, then reverse the effect of bad posture
   else:
     if(counter > 0)
       counter = counter - 1
+      csvwriter.writerow([num, val, 0])
+  num =  num + 1
 
 ser.close()
