@@ -3,7 +3,7 @@
 import csv, serial
 
 # initializing some stuff
-ser = serial.Serial("/dev/ttyACM0")
+ser = serial.Serial("/dev/ttyACM0", 9600)
 csvfile = open("data.csv", 'wb')
 csvwriter = csv.writer(csvfile, delimiter = ',', quotechar='"', quoting = csv.QUOTE_MINIMAL)
 csvwriter.writerow(["sl_no", "flexVal", "buzzed"])
@@ -11,9 +11,10 @@ csvwriter.writerow(["sl_no", "flexVal", "buzzed"])
 num = 1 # reference value for first reading
 counter = 0 # initial value of counter
 limit = 10 # tolerance value for counter
-threshold = 410 # threshold value, below this we should buzz
+threshold = 420 # threshold value, below this we should buzz
 
 # main program loop
+ser.flushInput()
 while(ser.isOpen()):
   val = int(ser.readline()[:3])
   # track the bad posture
@@ -22,7 +23,7 @@ while(ser.isOpen()):
     
     # if the bad posture is prolonged, send the buzz
     if(counter > limit):
-      ser.write("1")
+      ser.write('1')
       csvwriter.writerow([num, val, 1])
       counter = 0
     else:
