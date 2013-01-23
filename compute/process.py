@@ -17,21 +17,21 @@ threshold = 410 # threshold value, below this we should buzz
 while(ser.isOpen()):
   val = int(ser.readline()[:3])
   # track the bad posture
-  if(val > threshold):
+  if(val < threshold):
     counter = counter + 2
     
     # if the bad posture is prolonged, send the buzz
     if(counter > limit):
-      serial.write("1")
+      ser.write("1")
       csvwriter.writerow([num, val, 1])
       counter = 0
     else:
       csvwriter.writerow([num, val, 0])
   # if the posture is good, then reverse the effect of bad posture
   else:
-    if(counter > 0)
+    if(counter > 0):
       counter = counter - 1
-      csvwriter.writerow([num, val, 0])
+    csvwriter.writerow([num, val, 0])
   num =  num + 1
 
 ser.close()
